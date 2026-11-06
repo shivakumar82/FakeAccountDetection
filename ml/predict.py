@@ -83,8 +83,12 @@ def predict_account(account_data):
     else:
         risk_level = "Low"
 
-    # Explainable indicators
-    indicators = explain_account(account_data)
+    # Explain using the same normalized numeric values sent to the model.
+    normalized_account = {
+        feature: account.iloc[0][feature]
+        for feature in FEATURES
+    }
+    indicators = explain_account(normalized_account)
 
     return {
         "prediction": "Suspicious" if prediction == 1 else "Genuine",
